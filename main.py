@@ -1,18 +1,24 @@
 
-from openai import OpenAI
 import os
+import requests
+import time
 from dotenv import load_dotenv
-from send_to_telegram import send_post
-from generate_text import generate_hook, generate_lesson
-from generate_voice import generate_voice
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+TOKEN = os.getenv("TELEGRAM_TOKEN")
+CHAT_ID = os.getenv("TARGET_CHAT_ID")
+TEXT = os.getenv("POST_TEXT", "🧠 SmartTestBot готов!")
+
+def send_message():
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    payload = {"chat_id": CHAT_ID, "text": TEXT, "parse_mode": "Markdown"}
+    response = requests.post(url, json=payload)
+    print(response.text)
 
 if __name__ == "__main__":
-    print("Bot is running...")
-    hook = generate_hook()
-    lesson = generate_lesson()
-    audio_path = generate_voice(lesson)
-    send_post(hook, lesson, audio_path)
+    while True:
+        send_message()
+        time.sleep(86400)  # каждые 24 часа
+
 

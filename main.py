@@ -1,16 +1,16 @@
 
 import os
 import time
-from dotenv import load_dotenv
 from generate_text import generate_text
 from generate_voice import generate_voice
 from send_to_telegram import send_post
 
-# Загружаем все переменные окружения
-load_dotenv()
-
-# Проверка наличия OpenAI API ключа
-print("🔐 OPENAI_API_KEY =", os.getenv("OPENAI_API_KEY"))
+# Проверка ключа OpenAI
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    print("❌ OPENAI_API_KEY не найден! Завершаем...")
+    exit(1)
+print("✅ OPENAI_API_KEY загружен успешно.")
 
 # Старт цикла
 print("🚀 Main.py started: begin posting cycle...")
@@ -31,6 +31,7 @@ while True:
 
     print("⏳ Жду 24 часа до следующей публикации...")
     time.sleep(86400)  # 24 часа
+
 
 
 
